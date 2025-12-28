@@ -1,0 +1,4 @@
+course_id:int:PK
+course_name:string
+hours:int
+
