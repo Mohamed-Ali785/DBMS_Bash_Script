@@ -45,7 +45,7 @@ do
             if [[ -n $val && -z $flag ]]; then
                 break
             else
-                echo "Error: Value '$val' for ${col_name[i]} already exists (PK must be Unique and Not Empty).Try again."
+                echo "Error: Value '$val' for ${col_name[i]} empty or already exists (PK must be Unique and Not Empty).Try again."
                 continue
             fi
         else
