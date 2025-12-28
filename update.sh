@@ -51,10 +51,10 @@ awk -F'|' -v OFS='|' -v uc="$upcolnum" -v wc="$wherecolnum" -v uv="$new_val" -v 
 {
     if ((op=="="  && $wc==wv)   ||
         (op=="!=" && $wc!=wv)   ||
-        (op==">"  && $wc>wv)   ||
-        (op=="<"  && $wc<wv)   ||
-        (op==">=" && $wc>=wv)  ||
-        (op=="<=" && $wc<=wv) )
+        (op==">"  && $wc>wv)    ||
+        (op=="<"  && $wc<wv)    ||
+        (op==">=" && $wc>=wv)   ||
+        (op=="<=" && $wc<=wv)   )
         $uc = uv
     print $0
 }' "$data" > "$data.tmp" && mv "$data.tmp" "$data"
