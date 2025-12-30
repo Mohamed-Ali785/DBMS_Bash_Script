@@ -1,10 +1,13 @@
 #!/usr/bin/bash
+DB_path=$1
 
-read -p "Enter Database Name: " db
 read -p "Enter Table Name: " tb
-
-data="Databases/$db/$tb.data"
-meta="Databases/$db/$tb.meta"
+if [[ -z "$tb" || "$tb" =~ [^a-zA-Z0-9_] ]]; then
+    echo "Invalid Table Name"
+    exit 1
+fi
+data="$DB_path/$tb.data"
+meta="$DB_path/$tb.meta"
 
 if [[ ! -f $data || ! -f $meta ]]; then
     echo "Table does not exist"
