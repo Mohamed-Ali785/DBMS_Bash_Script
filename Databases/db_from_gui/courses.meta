@@ -1,0 +1,2 @@
+course_id:int:PK
+name:string
