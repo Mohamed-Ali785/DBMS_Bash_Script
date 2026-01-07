@@ -1,6 +1,5 @@
 #!/usr/bin/bash
 
-clear
 
 DB_path=$1
 
@@ -22,23 +21,37 @@ break
 done
 
 echo "1) Select All"
-echo "2) Select Colmn"
-echo "3) Select multiple colmns"
-echo "4) Select With Condition (specific row)"
+echo "2) Select Column"
+echo "3) Select Multiple Columns"
+echo "4) Select Column With Condition"
 read -p "Choose: " ch
 
 case $ch in 
-	1)	awk -F'|' '{print}' "$data"
+	1)	clear
+		awk -F'|' '{print}' "$data"
    		;;
-	2)	read -p "Enter Colmn Name: " col
-		colnum=`awk -F: -v col="$col" '{if(col==$1) print NR}' "$meta"`
-		if [[ -z $colnum ]]; then
-			echo "This Colmn Not Found"
-			exit 1
+	2)	while true
+		do
+		read -p "Enter Column: " col
+		if [[ -z "$col" || "$col" =~ [^a-zA-Z0-9_] ]]; then
+			echo "Invalid Column Name"
+			continue
 		fi
+		find=$(awk -F: -v coll="$col" '
+		{ if(coll==$1)  {print $1; exit;}}' "$meta")
+		if [[ -z "$find" ]]; then
+			echo "Column Not Found"
+			continue
+		fi
+		colnum=`awk -F: -v col="$col" '{if(col==$1) print NR}' "$meta"`
+		clear
+		echo "$col"
+		echo "----"
 		awk -F'|' -v c="$colnum" '{print $c}' "$data"
+		break
+		done
 		;;
-	3)	read -p "Enter Column Names separated with (,): " cols
+	3)	read -p "Enter Column Names Separated with (,): " cols
 		colnums=$(awk -F: -v cols="$cols" '
 			BEGIN { split(cols,c,",") }
 			{
@@ -52,6 +65,7 @@ case $ch in
 			echo "No Valid Colmns Not Found"
 			exit 1
 		fi;
+		clear
 		awk -F'|' -v colnums="$colnums" '
 		BEGIN {
 			# split the comma-separated column numbers into an array
@@ -66,24 +80,81 @@ case $ch in
 		}
 		' "$data"
 		;;
-	4)	read -p "Enter Column Name: " col
-		read -p "Enter Value: " value
-
-		col_num=$(awk -F: -v c="$col" '{if($1==c) print NR}' "$meta")
-
-		if [[ -z $col_num ]]; then
-			echo "Column not found"
-			exit 1
+	4)	while true
+		do
+		read -p "Enter Select Column: " col
+		if [[ -z "$col" || "$col" =~ [^a-zA-Z0-9_] ]]; then
+			echo "Invalid Column Name"
+			continue
 		fi
+		find=$(awk -F: -v coll="$col" '
+		{ if(coll==$1)  {print $1; exit;}}' "$meta")
+		if [[ -z "$find" ]]; then
+			echo "Column Not Found"
+			continue
+		fi
+		colnum=$(awk -F: -v col="$col" '{if(col==$1) print NR}' "$meta")
+		break
+		done
 
-		awk -F'|' -v c="$col_num" -v v="$value" '{if($c==v) print $0}' "$data"
+		 while true
+        do
+        read -p "Enter WHERE column: " where_col
+        if [[ -z "$where_col" || "$where_col" =~ [^a-zA-Z0-9_] ]]; then
+            echo "Invalid Column Name"
+            continue
+        fi
+        type=$(awk -F: -v coll="$where_col" '
+        { if(coll==$1)  {print $2; exit;}}' "$meta")
+        if [[ -z "$type" ]]; then
+            echo "Column Not Found"
+            continue
+        fi
+        break
+        done
+
+        while true
+        do
+        read -p "Enter WHERE value: " where_val
+        if [[ -n $where_val && $type == "int" && ! "$where_val" =~ ^[0-9]+$  ]]; then
+                    echo "Error: Invalid Integer"
+                    continue
+        fi
+        break
+        done
+
+        wherecolnum=$(awk -F: -v col="$where_col" '
+        {
+            if($1==col){
+                print NR
+                exit
+            }
+        }' "$meta")
+
+        if [[ "$type" != "string" ]]; then
+            read -p "Choose operator (=, !=, >, <, >=, <=): " op
+        else
+            read -p "Choose operator (=, !=): " op
+        fi
+		clear
+		echo "$col"
+		echo "----"
+    	awk -F'|' -v c="$wherecolnum" -v sc="$colnum" -v v="$where_val" -v op="$op" '
+        {
+            if( (op=="=" && $c==v)   ||
+                (op=="!=" && $c!=v)  ||
+                (op==">" && $c>v)    ||
+                (op=="<" && $c<v)    ||
+                (op==">=" && $c>=v)  ||
+                (op=="<=" && $c<=v)  )
+                print $sc 
+        }' "$data"
 		;;
 
 	*)	echo "Invalid choice"
     	;;
-		
-		
 esac
+
 while true
 do
 read -p "Table Menu?(Y/N): " c

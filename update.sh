@@ -37,7 +37,7 @@ if(col==$1){
             }
 }' "$meta")
 if [[ -z "$t" ]];then
-    echo "Invalid Column Name"
+    echo "Column Not Found"
     continue
 fi
 if [[ $ispk -eq 1 ]]; then
@@ -68,7 +68,7 @@ fi
 type=$(awk -F: -v coll="$where_col" '
 { if(coll==$1)  {print $2; exit;}}' "$meta")
 if [[ -z "$type" ]]; then
-    echo "Invalid Column Name"
+    echo "Column Not Found"
     continue
 fi
 break

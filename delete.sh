@@ -39,7 +39,7 @@ case $ch in
         type=$(awk -F: -v coll="$where_col" '
         { if(coll==$1)  {print $2; exit;}}' "$meta")
         if [[ -z "$type" ]]; then
-            echo "Invalid Column Name"
+            echo "Column Not Found"
             continue
         fi
         break
