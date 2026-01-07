@@ -1,4 +1,5 @@
 #!/usr/bin/bash
+clear
 
 DB_path=$1
 
@@ -14,4 +15,15 @@ fi
 for t in $tables
 do
     basename "$t" .meta
+done
+
+while true
+do
+read -p "Table Menu?(Y/N): " c
+if [[ $c =~ ^[Yy]([Ee][Ss])?$ ]]; then
+    clear
+    break
+else
+    continue
+fi
 done

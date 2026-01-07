@@ -1,4 +1,6 @@
 #!/bin/bash
+clear
+echo "Welecome to DBMS Bash Script project"
 DBs="Databases"
 if [ ! -d "$DBs" ]; then
     mkdir -p "$DBs"

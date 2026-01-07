@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
+clear
+
 DB_PATH=$1
 
 while true
@@ -22,6 +24,7 @@ do
         5) ./select.sh "$DB_PATH" ;;
         6) ./delete.sh "$DB_PATH" ;;
         7) ./update.sh "$DB_PATH" ;;
-        8) break ;;
+        8)  clear
+            break ;;
     esac
 done

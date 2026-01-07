@@ -20,8 +20,7 @@ while true; do
     fi
 
     case $choice in
-        "1") # Create Database
-            DB=$(zenity --entry --title="Create Database" --text="Enter Database Name:")
+        "1") DB=$(zenity --entry --title="Create Database" --text="Enter Database Name:")
             if [[ -n "$DB" ]]; then
                 # Simple validation for spaces/special chars
                 if [[ "$DB" =~ [^a-zA-Z0-9_] ]]; then
@@ -34,26 +33,23 @@ while true; do
                 fi
             fi
             ;;
-        "2") # List Databases
-            if [ -z "$(ls -A $DBs 2>/dev/null)" ]; then
+        "2") if [ -z "$(ls -A $DBs 2>/dev/null)" ]; then
                 zenity --info --text="No databases found."
-            else
+             else
                 ls "$DBs" | zenity --list --title="Databases" --column="Database Name" --height=300
-            fi
+             fi
             ;;
-        "3") # Connect Database
-            DB=$(zenity --entry --title="Connect" --text="Enter Database Name to Connect:")
-            if [[ -n "$DB" ]]; then
+        "3")  DB=$(zenity --entry --title="Connect" --text="Enter Database Name to Connect:")
+              if [[ -n "$DB" ]]; then
                 if [[ -d "$DBs/$DB" ]]; then
                     # Call the Table Menu GUI script
-                    ./tablemenu_gui.sh "$DBs/$DB"
+                    source ./tablemenu_gui.sh "$DBs/$DB"
                 else
                     zenity --error --text="Database '$DB' not found."
                 fi
             fi
             ;;
-        "4") # Drop Database
-            DB=$(zenity --entry --title="Drop Database" --text="Enter Database Name to DELETE:")
+        "4") DB=$(zenity --entry --title="Drop Database" --text="Enter Database Name to DELETE:")
             if [[ -n "$DB" && -d "$DBs/$DB" ]]; then
                 zenity --question --text="Are you sure you want to PERMANENTLY delete '$DB'?"
                 if [[ $? -eq 0 ]]; then
