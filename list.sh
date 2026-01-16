@@ -1,8 +1,13 @@
 #!/usr/bin/bash
+clear
 
 DB_path=$1
 
-echo "Tables in database 'school':"
+while true
+do
+
+path=$(basename "$DB_path")
+echo "Tables in database "$path":"
 
 tables=$(ls "$DB_path"/*.meta 2>/dev/null)
 
@@ -14,4 +19,15 @@ fi
 for t in $tables
 do
     basename "$t" .meta
+done
+
+
+read -p "Table Menu?(Y/N): " c
+if [[ $c =~ ^[Yy]([Ee][Ss])?$ ]]; then
+    clear
+    break
+else
+    clear
+    continue
+fi
 done

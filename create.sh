@@ -1,4 +1,7 @@
 #!/usr/bin/bash
+
+clear
+
 DB_path=$1
 
 while true
@@ -19,8 +22,6 @@ do
     fi
 
     tm=$(mktemp)
-    break
-done
 
 while true
 do
@@ -70,3 +71,14 @@ done
 touch "$data"
 mv "$tm" "$meta"
 echo "Table '$tb' created successfully."
+
+
+read -p "Table Menu?(Y/N): " c
+if [[ $c =~ ^[Yy]([Ee][Ss])?$ ]]; then
+    clear
+    break
+else
+    clear
+    continue
+fi
+done

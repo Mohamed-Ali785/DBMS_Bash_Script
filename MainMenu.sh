@@ -1,4 +1,6 @@
 #!/bin/bash
+clear
+
 DBs="Databases"
 if [ ! -d "$DBs" ]; then
     mkdir -p "$DBs"
@@ -7,6 +9,8 @@ fi
 
 while true
 do
+echo "Welecome to DBMS Bash Script project"
+echo "------------------------------------"
 echo "1) Create Database"
 echo "2) List Databases"
 echo "3) Connect Database"
@@ -14,6 +18,7 @@ echo "4) Drop Database"
 echo "5) Exit"
 
 read -p "Choose: " choise
+clear
 case $choise in
 	1)      read -p "Enter Database to create: " DB
 			if [ -d "$DBs/$DB" ]
@@ -54,4 +59,5 @@ case $choise in
         	;;
 
 esac
+
 done
