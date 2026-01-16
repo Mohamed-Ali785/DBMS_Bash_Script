@@ -22,8 +22,6 @@ do
     fi
 
     tm=$(mktemp)
-    break
-done
 
 while true
 do
@@ -74,13 +72,13 @@ touch "$data"
 mv "$tm" "$meta"
 echo "Table '$tb' created successfully."
 
-while true
-do
+
 read -p "Table Menu?(Y/N): " c
 if [[ $c =~ ^[Yy]([Ee][Ss])?$ ]]; then
     clear
     break
 else
+    clear
     continue
 fi
 done

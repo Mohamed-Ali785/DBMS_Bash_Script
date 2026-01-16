@@ -17,8 +17,6 @@ if [[ ! -f $data || ! -f $meta ]]; then
     echo "Table does not exist"
     continue
 fi
-break
-done
 
 echo "1) Select All"
 echo "2) Select Column"
@@ -155,13 +153,12 @@ case $ch in
     	;;
 esac
 
-while true
-do
 read -p "Table Menu?(Y/N): " c
 if [[ $c =~ ^[Yy]([Ee][Ss])?$ ]]; then
     clear
     break
 else
+	clear
     continue
 fi
 done

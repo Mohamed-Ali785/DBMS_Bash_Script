@@ -59,11 +59,5 @@ case $choise in
         	;;
 
 esac
-read -p "Main Menu?(Y/N): " c
-if [[ $c =~ ^[Yy]([Ee][Ss])?$ ]]; then
-    clear
-	continue
-else
-    break
-fi
+
 done

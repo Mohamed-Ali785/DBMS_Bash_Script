@@ -17,8 +17,7 @@ if [[ ! -f $data || ! -f $meta ]]; then
     echo "Table does not exist"
     continue
 fi
-break
-done
+
 
 
 while true
@@ -108,13 +107,13 @@ awk -F'|' -v OFS='|' -v uc="$upcolnum" -v wc="$wherecolnum" -v uv="$new_val" -v 
         $uc = uv
     print $0
 }' "$data" > "$data.tmp" && mv "$data.tmp" "$data"
-while true
-do
+
 read -p "Table Menu?(Y/N): " c
 if [[ $c =~ ^[Yy]([Ee][Ss])?$ ]]; then
     clear
     break
 else
+    clear
     continue
 fi
 done
