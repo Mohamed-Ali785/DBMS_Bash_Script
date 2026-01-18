@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-
+clear
 
 DB_path=$1
 
